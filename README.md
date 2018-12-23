@@ -5,3 +5,5 @@ Completed tutorial of tik-tac-toe game from official react's documentation.
 * `git clone <repository>`
 * `npm install`
 * `npm start`
+
+![Example of Tik-tac-toe app with React.js](public/pic.jpg)
