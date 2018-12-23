@@ -1,4 +1,4 @@
-Completed tutorial of tik-tac-toe game from official react's documentation.
+Completed tutorial of tic-tac-toe game from official react's documentation.
 
 ## Set up
 
