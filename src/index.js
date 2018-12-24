@@ -22,24 +22,25 @@ class Board extends React.Component {
     />;
   }
 
+  createBoard(){
+
+    let rows = [];
+    let counter = 0;
+    for (let i = 0; i < 3; i++) {
+      let squares = [];
+      for (let j = 0; j < 3; j++) {
+        squares.push(this.renderSquare(counter));
+        counter++;
+      }
+      rows.push(<div className="tile is-ancestor">{squares}</div>);
+    }
+    return rows;
+  }
+
   render() {
     return (
       <div>
-        <div className="tile is-ancestor">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="tile is-ancestor">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="tile is-ancestor">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {this.createBoard()}
       </div>
     );
   }
@@ -79,11 +80,9 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-    console.log(this.state.stepNumber);
     const moves = history.map((step, move) => {
-    console.log(move);
       let desc;
-      if (move && move == current) {
+      if (move && move === current) {
         desc = '<strong>Go to move #' + move + '</strong>';
       } else if (move) {
         desc = 'Go to move #' + move;
