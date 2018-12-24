@@ -2,35 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function Square(props) {
-    return (
-      <button
-      className="tile is-12"
-      onClick={() => props.onClick()}>
-        { props.value }
-      </button>
-    );
+const Square = (props) => {
+  return (
+    <button
+    className="tile is-12"
+    onClick={() => props.onClick()}
+    >
+    { props.value }
+    </button>
+  );
 }
 
 class Board extends React.Component {
-  /*constructor(props){
-    super(props);
-    this.state = {
-      squares: Array(9).fill(null),
-      isXnext:true
-    }
-  }*/
-
-  // handleClick(i) {
-  //   const squares = this.state.squares.slice();
-  //   // if won or board filled don't process click
-  //   if (calculateWinner(squares) || squares[i]) {
-  //     return;
-  //   }
-  //   squares[i] = this.state.isXnext ? 'X': 'O';
-  //   this.setState({squares: squares, isXnext:!this.state.isXnext});
-  // }
-
   renderSquare(i) {
     // return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)} />;
     return <Square
@@ -40,15 +23,6 @@ class Board extends React.Component {
   }
 
   render() {
-    // Moved to Game component
-    /*const winner = calculateWinner(this.state.squares);
-    let status;
-    if (winner) {
-      status = "Winner " + winner;
-    } else {
-      status ='Next player: ' + (this.state.isXnext ? 'X' : 'O');
-    }*/
-
     return (
       <div>
         <div className="tile is-ancestor">
@@ -79,11 +53,18 @@ class Game extends React.Component {
       squares: Array(9).fill(null)
       }],
       isXnext: true,
+      stepNumber:0,
     }
   }
 
+  jumpTo(step) {
+    this.setState({
+      stepNumber: step,
+      isXnext: (step % 0 ) === 0,
+    });
+  }
   handleClick(i) {
-    const history = this.state.history;
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
     // if won or board filled don't process click
@@ -91,21 +72,28 @@ class Game extends React.Component {
       return;
     }
     squares[i] = this.state.isXnext ? 'X': 'O';
-    this.setState({history: history.concat([{squares: squares}]), isXnext:!this.state.isXnext});
+    this.setState({history: history.concat([{squares: squares}]), stepNumber: history.length, isXnext:!this.state.isXnext});
   }
 
   render() {
     const history = this.state.history;
-    const current = history[history.length - 1];
+    const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-
+    console.log(this.state.stepNumber);
     const moves = history.map((step, move) => {
-      const desc = move ?
-        'Go to move #' + move :
-        'Go to game start';
+    console.log(move);
+      let desc;
+      if (move && move == current) {
+        desc = '<strong>Go to move #' + move + '</strong>';
+      } else if (move) {
+        desc = 'Go to move #' + move;
+      } else {
+        desc = 'Go to game start';
+      }
+
       return (
-        <li>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+        <li key={move}>
+          <button onClick={() => this.jumpTo(move)} className={ move === this.state.stepNumber ? 'bold-text':''}>{desc}</button>
         </li>
       );
     });
