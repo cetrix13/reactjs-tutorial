@@ -1,4 +1,4 @@
-Completed tutorial of tic-tac-toe game from official React.js docs. Bootstraped with create-react-app command. 
+Completed tutorial of tic-tac-toe game from official React.js docs. Bootstraped with `create-react-app` command. 
 
 ## Set up
 
